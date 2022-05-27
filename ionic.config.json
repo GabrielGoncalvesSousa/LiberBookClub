@@ -1,0 +1,7 @@
+{
+  "name": "LiberBookClub",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
