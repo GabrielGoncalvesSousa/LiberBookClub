@@ -4,5 +4,8 @@
       "path": "."
     }
   ],
-  "settings": {}
+  "settings": {
+    "ionic.externalAddress": true,
+    "ionic.liveReload": true
+  }
 }
