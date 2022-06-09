@@ -13,6 +13,7 @@ export class DataService {
   }
 
   async init() {
+    lala;
     console.log('INIT');
     await this.storage.defineDriver(cordovaSQLiteDriver);
 
