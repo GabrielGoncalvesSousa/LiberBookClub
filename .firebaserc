@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "liberbookclub-aea35": {
+      "hosting": {
+        "app": [
+          "liberbookclub-aea35"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "liberbookclub-aea35"
+  }
+}
