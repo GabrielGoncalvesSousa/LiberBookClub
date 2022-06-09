@@ -15,7 +15,7 @@ export interface Aut {
 @Injectable({
   providedIn: 'root',
 })
-export class BasededadosService {
+export class dbSqliteService {
   private database: SQLiteObject;
   private dbReady: BehaviorSubject<boolean> = new BehaviorSubject(false);
 

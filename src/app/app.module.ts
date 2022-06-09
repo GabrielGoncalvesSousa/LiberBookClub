@@ -5,17 +5,23 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
+//Ionic storage
 import { IonicStorageModule } from '@ionic/storage-angular';
+
 import { HttpClientModule } from '@angular/common/http';
+
+//Sqlite drivers
 import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { Drivers } from '@ionic/storage';
 import * as CordovaSqliteDriver from 'localforage-cordovasqlitedriver';
-import { initializeApp,provideFirebaseApp } from '@angular/fire/app';
+
+//Firebase
+import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
 import { environment } from '../environments/environment';
-import { provideAuth,getAuth } from '@angular/fire/auth';
-import { provideFirestore,getFirestore } from '@angular/fire/firestore';
-import { provideStorage,getStorage } from '@angular/fire/storage';
+import { provideAuth, getAuth } from '@angular/fire/auth';
+import { provideFirestore, getFirestore } from '@angular/fire/firestore';
+import { provideStorage, getStorage } from '@angular/fire/storage';
 
 @NgModule({
   declarations: [

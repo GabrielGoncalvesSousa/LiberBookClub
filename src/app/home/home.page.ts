@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from 'src/database/services/data.service';
+import { DataService } from '../api/services/data.service';
+import { FirebaseDataService } from '../api/services/firebase-data.service';
 
 @Component({
   selector: 'app-home',
@@ -12,9 +13,13 @@ export class HomePage implements OnInit {
   contador: any;
   listData: any;
 
-  constructor(private dataService: DataService) {
+  constructor(private dataService: DataService, private FirebaseDataService: FirebaseDataService) {
     this.contador = 0;
     // this.listData = [];
+
+    FirebaseDataService.getUtilizadores().subscribe((data) => {
+      console.log(data);
+    });
 
     this.listData = {};
     this.loadData();
