@@ -27,8 +27,14 @@ export class HomePage implements OnInit {
 
   async loadData() {
     console.log('A DAR LOAD NO HOME PAGE');
-    this.listData = await this.dataService.getData();
+    // this.listData = await this.dataService.getData();
     // return await this.dataService.getData();
+
+    //Buscar dados com observable visto que tamos a usar o sqlite cordova
+    this.dataService.getData().subscribe((res) => {
+      console.log(res);
+      this.listData = res;
+    });
   }
 
   async getRandomString() {

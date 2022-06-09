@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { DbSqliteService } from './db-sqlite.service';
+import { dbSqliteService } from './db-sqlite.service';
 
 describe('DbSqliteService', () => {
-  let service: DbSqliteService;
+  let service: dbSqliteService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(DbSqliteService);
+    service = TestBed.inject(dbSqliteService);
   });
 
   it('should be created', () => {
