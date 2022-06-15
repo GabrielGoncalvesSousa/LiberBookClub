@@ -1,0 +1,39 @@
+<ion-header>
+  <!-- Toolbar parte cima-->
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Home</ion-title>
+  </ion-toolbar>
+  <app-top-nav-bar
+    (OUTPUT_searchBarActive_TopNavBar)="functionSearchBarUpdate_MainPage($event)"
+  ></app-top-nav-bar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="isSearchBarActiveMainPage==false; else elseBlock">
+    <div *ngFor="let livro of data.livros">
+      <ion-card href="#" class="ion-activated">
+        <ion-card-header>
+          <ion-card-title>{{livro.nome}}</ion-card-title>
+
+          <ion-card-subtitle
+            >{{livro.autor}} publicado em {{livro.dataPublicada.toDate()|
+            date:'dd/MM/yyyy'}}
+          </ion-card-subtitle>
+        </ion-card-header>
+        <ion-img id="imagem" src="{{livro.img}}"></ion-img>
+        <ion-card-content> {{livro.descricao}} </ion-card-content>
+      </ion-card>
+    </div>
+  </div>
+  <ng-template #elseBlock
+    ><app-results-search-bar
+      [INPUT_searchBarUserInput_ResultsSearchBar]="OUTPUT_searchBarUserInput_MainPage"
+    ></app-results-search-bar
+  ></ng-template>
+</ion-content>
+
+<app-footer-nav-bar></app-footer-nav-bar>
+<!-- Tabs de baixo-->

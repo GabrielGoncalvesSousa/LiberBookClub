@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DataService } from '../api/services/data.service';
-import { FirebaseDataService } from '../api/services/firebase-data.service';
+import { Router } from '@angular/router';
+import { DataService } from '../../api/services/data.service';
+import { FirebaseDataService } from '../../api/services/firebase-data.service';
 
 @Component({
   selector: 'app-home',
@@ -12,19 +13,51 @@ import { FirebaseDataService } from '../api/services/firebase-data.service';
 export class HomePage implements OnInit {
   contador: any;
   listData: any;
+  data: any;
 
-  constructor(private dataService: DataService, private FirebaseDataService: FirebaseDataService) {
+  constructor(
+    private dataService: DataService,
+    private FirebaseDataService: FirebaseDataService,
+    private router: Router
+  ) {
     this.contador = 0;
+
     // this.listData = [];
 
-    FirebaseDataService.getUtilizadores().subscribe((data) => {
+    // FirebaseDataService.getData().subscribe((res) => {
+    //   console.log(res);
+    // });
+
+    this.data = FirebaseDataService.getData();
+
+    console.log(this.data);
+
+    FirebaseDataService.getUtilizadorById(1).subscribe((data) => {
+      console.log('Utilizador by id 1');
       console.log(data);
     });
+
+    FirebaseDataService.getlivroByGeneroId(0).subscribe((data) => {
+      console.log('BLAUU');
+      console.log(data);
+    });
+
+    // FirebaseDataService.getLivros().subscribe((data) => {
+    //   console.log(data);
+    // });
 
     this.listData = {};
     this.loadData();
   }
 
+  public irLogin() {
+    this.router.navigate(
+      [
+        'main-page',
+      ],
+      this.data
+    );
+  }
   async loadData() {
     console.log('A DAR LOAD NO HOME PAGE');
     // this.listData = await this.dataService.getData();

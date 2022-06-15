@@ -1,0 +1,16 @@
+<ion-content>
+  <div *ngFor="let livro of resultadoQuery">
+    <ion-card href="#" class="ion-activated">
+      <ion-card-header>
+        <ion-card-title>{{ livro.nome }}</ion-card-title>
+
+        <ion-card-subtitle
+          >{{ livro.autor }} publicado em
+          {{ livro.dataPublicada.toDate() | date: "dd/MM/yyyy" }}
+        </ion-card-subtitle>
+      </ion-card-header>
+      <ion-img id="imagem" src="{{ livro.img }}"></ion-img>
+      <ion-card-content> {{ livro.descricao }} </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

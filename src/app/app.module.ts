@@ -22,6 +22,7 @@ import { environment } from '../environments/environment';
 import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideStorage, getStorage } from '@angular/fire/storage';
+import { FirebaseDataService } from './api/services/firebase-data.service';
 
 @NgModule({
   declarations: [
@@ -41,7 +42,7 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
     }),
     HttpClientModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    provideAuth(() => getAuth()),
+    // provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
   ],
@@ -49,6 +50,7 @@ import { provideStorage, getStorage } from '@angular/fire/storage';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     SQLite,
     SQLitePorter,
+    FirebaseDataService,
   ],
   bootstrap: [
     AppComponent,

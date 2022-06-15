@@ -4,4 +4,6 @@ export interface Livro {
   nomeLivro: string;
   autor: string;
   dataPublicada: Date;
+  descricao: string;
+  img: string;
 }

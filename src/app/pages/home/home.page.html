@@ -1,0 +1,54 @@
+<!-- <ion-header>
+  <ion-toolbar>
+    <ion-title> Blank </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <ion-item *ngFor="let dado of listData.data ">
+      <ion-label>Dado nr </ion-label>
+      <ion-label *ngFor="let meme of dado |keyvalue">
+        <ion-label>{{meme.key}}</ion-label>
+        <ion-label>{{meme.value}}</ion-label>
+        <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+          <ion-fab-button color="primary" (click)="removeItem(dado)">
+            <ion-icon name="remove"></ion-icon>
+          </ion-fab-button>
+        </ion-fab>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button color="primary" (click)="addData()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content> -->
+
+<ion-header>
+  <ion-toolbar>
+    <ion-title> Ionic Form </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="auth-form">
+  <ion-grid>
+    <ion-row>
+      <ion-col align-self-center>
+        <ion-button
+          [routerLink]="['/registration']"
+          expand="block"
+          color="primary"
+          >Register</ion-button
+        >
+        <span class="divider line one-line">or</span>
+        <span class="already">Already a user?</span>
+        <ion-button (click)="irLogin()" expand="block" color="danger"
+          >Sign In</ion-button
+        >
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
