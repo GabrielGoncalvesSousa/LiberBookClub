@@ -1,0 +1,70 @@
+<ion-content>
+  <div class="heading">
+    <h1>Login Now</h1>
+    <p>Please login to continue using our app.</p>
+  </div>
+  <div class="social-login">
+    <p>Enter via social network</p>
+    <div class="links">
+      <ion-button class="twitter" routerLink="/thank-you">
+        <ion-icon name="logo-twitter"></ion-icon>
+      </ion-button>
+      <ion-button class="facebook" routerLink="/thank-you">
+        <ion-icon name="logo-facebook"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+
+  <form [formGroup]="formData" (ngSubmit)="onSubmit($event)">
+    <ion-item>
+      <ion-label>E-Mail</ion-label>
+      <ion-input formControlName="email"></ion-input>
+    </ion-item>
+
+    <span
+      slot="error"
+      *ngIf="errorControl.email.errors?.required && isSubmited"
+    >
+      Your E-Mail is invalid!
+    </span>
+
+    <div class="email-login">
+      <p>Or login with email</p>
+      <div class="formfield">
+        <input type="text" name="email" id="email" formControlName="email" />
+        <label for="email" placeholder="Email">Email</label>
+        <span
+          class="error ion-padding"
+          *ngIf="isSubmited && errorControl.email.errors?.required"
+          >Email is required.</span
+        >
+      </div>
+      <div class="formfield">
+        <input
+          type="password"
+          name="password"
+          id="password"
+          formControlName="password"
+        />
+        <label for="password" placeholder="Password">Password</label>
+        <span
+          class="error ion-padding"
+          *ngIf="isSubmited && errorControl.password.errors?.required"
+        >
+          Password is required.
+        </span>
+      </div>
+      <div class="other-links">
+        <div class="remember-me">
+          <ion-checkbox formControlName="rememberMe"></ion-checkbox>
+          <p>Remember me</p>
+        </div>
+        <p class="forgot">Forgot password?</p>
+      </div>
+    </div>
+    <div class="login-button">
+      <ion-button class="login" type="submit">Login</ion-button>
+      <p>Don't have an account? <span routerLink="/signup">Signup</span></p>
+    </div>
+  </form>
+</ion-content>
