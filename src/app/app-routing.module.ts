@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'home',
+    redirectTo: 'welcome',
     pathMatch: 'full',
   },
   {
@@ -20,10 +20,6 @@ const routes: Routes = [
     loadChildren: () => import('./pages/login/login.module').then((m) => m.LoginPageModule),
   },
   {
-    path: 'registration',
-    loadChildren: () => import('./pages/registration/registration.module').then((m) => m.RegistrationPageModule),
-  },
-  {
     path: 'forgot-password',
     loadChildren: () =>
       import('./pages/forgot-password/forgot-password.module').then((m) => m.ForgotPasswordPageModule),
@@ -31,6 +27,18 @@ const routes: Routes = [
   {
     path: 'main-page',
     loadChildren: () => import('./pages/main-page/main-page.module').then((m) => m.MainPagePageModule),
+  },
+  {
+    path: 'signup',
+    loadChildren: () => import('./pages/signup/signup.module').then((m) => m.SignupPageModule),
+  },
+  {
+    path: 'thank-you',
+    loadChildren: () => import('./pages/thank-you/thank-you.module').then((m) => m.ThankYouPageModule),
+  },
+  {
+    path: 'welcome',
+    loadChildren: () => import('./pages/welcome/welcome.module').then((m) => m.WelcomePageModule),
   },
 ];
 

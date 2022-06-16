@@ -11,15 +11,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LoginPage implements OnInit {
   public data: any;
 
-  constructor(private router: Router, private rotaAtiva: ActivatedRoute) {}
+  constructor() {}
 
-  ngOnInit() {
-    if (this.router.getCurrentNavigation().extras) {
-      this.data = this.router.getCurrentNavigation().extras;
-    }
-
-    console.log(this.data);
-
-    console.log(this.data.generos[0]['id']);
-  }
+  ngOnInit() {}
 }

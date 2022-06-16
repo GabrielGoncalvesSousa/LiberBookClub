@@ -1,0 +1,56 @@
+.heading {
+  margin-top: 10vh;
+  text-align: center;
+  h1 {
+    font-size: 2rem;
+  }
+  p {
+    color: #838383;
+  }
+}
+.log {
+  text-align: center;
+  margin-top: 45px;
+}
+.social-login {
+  margin-top: 0px;
+  text-align: center;
+  p {
+    color: #838383;
+  }
+  ion-button {
+    width: 40%;
+    height: 50px;
+    ion-icon {
+      font-size: 1.6rem;
+    }
+  }
+  .twitter {
+    --background: #00acee;
+    margin-right: 20px;
+  }
+  .facebook {
+    --background: #4267b2;
+  }
+}
+
+.email-login {
+  margin-top: 45px;
+  text-align: center;
+  p {
+    color: #838383;
+  }
+  .signup {
+    width: 85%;
+    height: 50px;
+    text-transform: none;
+    font-size: 1.6rem;
+  }
+}
+::ng-deep .image {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  padding-top: 10px;
+  width: 30%;
+}
