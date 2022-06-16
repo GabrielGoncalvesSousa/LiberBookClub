@@ -8,7 +8,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'main-page',
+    redirectTo: 'home',
     pathMatch: 'full',
   },
   {

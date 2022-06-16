@@ -7,16 +7,22 @@ describe('MainPagePage', () => {
   let component: MainPagePage;
   let fixture: ComponentFixture<MainPagePage>;
 
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ MainPagePage ],
-      imports: [IonicModule.forRoot()]
-    }).compileComponents();
+  beforeEach(
+    waitForAsync(() => {
+      TestBed.configureTestingModule({
+        declarations: [
+          MainPagePage,
+        ],
+        imports: [
+          IonicModule.forRoot(),
+        ],
+      }).compileComponents();
 
-    fixture = TestBed.createComponent(MainPagePage);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  }));
+      fixture = TestBed.createComponent(MainPagePage);
+      component = fixture.componentInstance;
+      fixture.detectChanges();
+    })
+  );
 
   it('should create', () => {
     expect(component).toBeTruthy();

@@ -12,26 +12,21 @@ export class TopNavBarComponent implements OnInit {
   @Output() OUTPUT_searchBarActive_TopNavBar = new EventEmitter();
 
   public currentPopover: any;
-  public searchBarQuery_TopNavBar: string = '';
-  isSearchBarActiveTopNavBar: boolean = false;
 
   constructor() {}
 
   onSearchChange(ev: any) {
+    console.log(ev.target.value.length);
+
     if (ev.target.value.length > 0) {
-      this.isSearchBarActiveTopNavBar = true;
-
       this.OUTPUT_searchBarActive_TopNavBar.emit([
-        this.isSearchBarActiveTopNavBar,
         ev.target.value,
+        true,
       ]);
-
-      this.searchBarQuery_TopNavBar = ev.target.value;
     } else {
-      this.isSearchBarActiveTopNavBar = false;
       this.OUTPUT_searchBarActive_TopNavBar.emit([
-        this.isSearchBarActiveTopNavBar,
-        ev.target.value,
+        '',
+        false,
       ]);
     }
   }
@@ -76,6 +71,4 @@ export class TopNavBarComponent implements OnInit {
       }
     );
   }
-
-  clickedSearch() {}
 }

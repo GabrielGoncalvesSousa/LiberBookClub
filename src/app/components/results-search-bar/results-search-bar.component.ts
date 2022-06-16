@@ -10,22 +10,56 @@ import { FirebaseDataService } from '../../api/services/firebase-data.service';
   ],
 })
 export class ResultsSearchBarComponent implements OnInit, OnChanges {
-  @Input() public INPUT_searchBarUserInput_ResultsSearchBar: string;
+  @Input() public INPUT_searchBarUserInput_ResultsSearchBar: [string, boolean];
 
   public resultadoQuery: any;
+  public didUserClickOnBook: boolean;
 
-  constructor(private firebaseDataService: FirebaseDataService) {}
+  constructor(private firebaseDataService: FirebaseDataService) {
+    this.resultadoQuery = [];
+    this.firstLoad();
+    console.log(this.resultadoQuery);
+  }
 
   ngOnChanges(changes: SimpleChanges): void {
-    this.INPUT_searchBarUserInput_ResultsSearchBar = changes.INPUT_searchBarUserInput_ResultsSearchBar.currentValue;
+    console.log(this.INPUT_searchBarUserInput_ResultsSearchBar);
     this.refreshContent();
   }
 
-  async ngOnInit() {}
+  async ngOnInit() {
+    console.log('wtf');
+  }
 
   async refreshContent() {
-    this.firebaseDataService.getLivroByName(this.INPUT_searchBarUserInput_ResultsSearchBar).subscribe((data) => {
+    if (this.INPUT_searchBarUserInput_ResultsSearchBar) {
+      if (this.INPUT_searchBarUserInput_ResultsSearchBar[1] !== false) {
+        this.firebaseDataService.getLivroByName(this.INPUT_searchBarUserInput_ResultsSearchBar[0]).subscribe((data) => {
+          this.resultadoQuery = data;
+          console.log(this.resultadoQuery);
+        });
+      } else {
+        this.firstLoad();
+      }
+    }
+  }
+
+  async firstLoad() {
+    this.firebaseDataService.getLivros().subscribe((data) => {
       this.resultadoQuery = data;
+
+      console.log(this.resultadoQuery);
     });
+    this.didUserClickOnBook = false;
+  }
+
+  public goToBook(book: any) {
+    this.didUserClickOnBook = true;
+    let utilizador_livro;
+    let comentarios;
+    this.firebaseDataService.getUtilizadores_livroByIdLivro(book.id).subscribe((data) => {
+      utilizador_livro = data;
+    });
+
+    this.resultadoQuery = book;
   }
 }

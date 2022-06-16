@@ -9,22 +9,23 @@ import { FirebaseDataService } from 'src/app/api/services/firebase-data.service'
   ],
 })
 export class MainPagePage implements OnInit, AfterViewInit {
-  @Output() OUTPUT_searchBarUserInput_MainPage: string;
+  @Output() OUTPUT_searchBarUserInput_MainPage: any;
 
-  public isSearchBarActiveMainPage: boolean = false;
-  private data: any;
+  public isSearchBarActiveMainPage: boolean;
 
-  constructor(private FirebaseDataService: FirebaseDataService) {}
-
-  ngOnInit() {
-    this.data = this.FirebaseDataService.getData();
+  constructor(private FirebaseDataService: FirebaseDataService) {
+    this.isSearchBarActiveMainPage = false;
   }
 
-  ngAfterViewInit() {}
+  ngOnInit() {}
 
-  functionSearchBarUpdate_MainPage(event: [boolean, string]) {
-    event[0] == false
-      ? (this.isSearchBarActiveMainPage = false)
-      : ((this.isSearchBarActiveMainPage = true), (this.OUTPUT_searchBarUserInput_MainPage = event[1]));
+  ngAfterViewInit() {
+    console.log(this.isSearchBarActiveMainPage);
+  }
+
+  functionSearchBarUpdate_MainPage(event: any) {
+    event !== ''
+      ? ((this.isSearchBarActiveMainPage = true), (this.OUTPUT_searchBarUserInput_MainPage = event))
+      : (this.isSearchBarActiveMainPage = false);
   }
 }

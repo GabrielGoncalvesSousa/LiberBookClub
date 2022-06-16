@@ -1,24 +1,24 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { TopNavBarComponent } from './top-nav-bar.component';
+import { ShowInfoBookComponent } from './show-info-book.component';
 
-describe('TopNavBarComponent', () => {
-  let component: TopNavBarComponent;
-  let fixture: ComponentFixture<TopNavBarComponent>;
+describe('ShowInfoBookComponent', () => {
+  let component: ShowInfoBookComponent;
+  let fixture: ComponentFixture<ShowInfoBookComponent>;
 
   beforeEach(
     waitForAsync(() => {
       TestBed.configureTestingModule({
         declarations: [
-          TopNavBarComponent,
+          ShowInfoBookComponent,
         ],
         imports: [
           IonicModule.forRoot(),
         ],
       }).compileComponents();
 
-      fixture = TestBed.createComponent(TopNavBarComponent);
+      fixture = TestBed.createComponent(ShowInfoBookComponent);
       component = fixture.componentInstance;
       fixture.detectChanges();
     })

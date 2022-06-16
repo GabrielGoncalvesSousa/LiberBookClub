@@ -17,6 +17,7 @@ export class FirebaseDataService {
   private generoCollectionRef = collection(this.firestore, 'genero');
   private utilizadorCollectionRef = collection(this.firestore, 'utilizador');
   private utilizador_livroCollectionRef = collection(this.firestore, 'utilizador_livro');
+  private comentarioCollectionRef = collection(this.firestore, 'comentario');
 
   private data = this.getData();
 
@@ -114,5 +115,20 @@ export class FirebaseDataService {
     });
 
     return observable;
+  }
+
+  getUtilizadores_livroByIdLivro(idLivro: any) {
+    const queryUtilizadorLivro = query(this.utilizador_livroCollectionRef, where('id_livro', '==', idLivro));
+
+    const utilizadorLivroCollectionData = collectionData(queryUtilizadorLivro, { idField: 'id' }) as Observable<
+      Utilizador_livro[]
+    >;
+    return utilizadorLivroCollectionData;
+  }
+
+  getComentarioByBookId(id: any) {
+    const queryComentario = query(this.comentarioCollectionRef, where('id', '==', id));
+    const comentarioCollectionData = collectionData(queryComentario, { idField: 'id' }) as Observable<Livro[]>;
+    return comentarioCollectionData;
   }
 }
