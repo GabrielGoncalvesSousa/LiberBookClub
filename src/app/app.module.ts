@@ -15,6 +15,8 @@ import { SQLitePorter } from '@ionic-native/sqlite-porter/ngx';
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { Drivers } from '@ionic/storage';
 import * as CordovaSqliteDriver from 'localforage-cordovasqlitedriver';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 //Firebase
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
@@ -23,12 +25,15 @@ import { provideAuth, getAuth } from '@angular/fire/auth';
 import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { FirebaseDataService } from './api/services/firebase-data.service';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
     AppComponent,
   ],
   imports: [
+    MatInputModule,
+    MatFormFieldModule,
     BrowserModule,
     IonicModule.forRoot(),
     AppRoutingModule,
@@ -45,6 +50,7 @@ import { FirebaseDataService } from './api/services/firebase-data.service';
     // provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
+    BrowserAnimationsModule,
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

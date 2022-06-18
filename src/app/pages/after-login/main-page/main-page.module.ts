@@ -12,22 +12,17 @@ import { TopNavBarComponent } from 'src/app/components/top-nav-bar/top-nav-bar.c
 import { ResultsSearchBarComponent } from 'src/app/components/results-search-bar/results-search-bar.component';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    FormsModule,
-    IonicModule,
-    MainPagePageRoutingModule,
-  ],
-  entryComponents: [
-    FooterNavBarComponent,
-    TopNavBarComponent,
-    ResultsSearchBarComponent,
-  ],
-  declarations: [
-    MainPagePage,
-    FooterNavBarComponent,
-    TopNavBarComponent,
-    ResultsSearchBarComponent,
-  ],
+    imports: [
+        CommonModule,
+        FormsModule,
+        IonicModule,
+        MainPagePageRoutingModule,
+    ],
+    declarations: [
+        MainPagePage,
+        FooterNavBarComponent,
+        TopNavBarComponent,
+        ResultsSearchBarComponent,
+    ]
 })
 export class MainPagePageModule {}

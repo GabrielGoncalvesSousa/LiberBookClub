@@ -32,6 +32,10 @@
 }
 
 .email-login {
+  width: auto;
+  height: auto;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 45px;
   text-align: center;
   p {
@@ -45,6 +49,7 @@
     border: 0px;
     font-size: 1em;
     margin-bottom: 10px;
+    background-color: red;
   }
 
   .formfield > input,
@@ -113,4 +118,10 @@
       color: #3880ff;
     }
   }
+}
+
+.email-input .mat-form-field {
+  width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
 }

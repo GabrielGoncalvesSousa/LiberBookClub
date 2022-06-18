@@ -1,7 +1,19 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-
+import {
+  Validators,
+  FormControl,
+  FormBuilder,
+  FormGroup,
+  ValidatorFn,
+  ValidationErrors,
+  AbstractControl,
+  AsyncValidator,
+  AsyncValidatorFn,
+} from '@angular/forms';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { FirebaseDataService } from 'src/app/api/services/firebase-data.service';
+import { controlMailExists } from './email-validator';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -12,51 +24,71 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LoginPage implements OnInit {
   public data: any;
   public isSubmited: boolean = false;
-  public formData: FormGroup;
-  constructor(public formBuilder: FormBuilder) {
-    this.formData = new FormGroup({
-      email: new FormControl(),
-      password: new FormControl(),
-      rememberMe: new FormControl(),
-    });
-  }
+  public formGroup: FormGroup;
 
-  ngOnInit() {
-    this.formData = this.formBuilder.group({
-      email: [
+  public password: string;
+  public doesMailExist: boolean = true;
+
+  constructor(public formBuilder: FormBuilder, public firebaseDataService: FirebaseDataService) {
+    this.formGroup = new FormGroup({
+      email: new FormControl(
         '',
         [
           Validators.email,
           Validators.required,
         ],
-      ],
-      password: [
-        '',
-        [
-          Validators.required,
-        ],
-      ],
-      rememberMe: [
-        '',
-        [
-          Validators.required,
-        ],
-      ],
+        controlMailExists(firebaseDataService)
+      ),
+
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
+
+      rememberMe: new FormControl(false, [
+        Validators.required,
+      ]),
     });
   }
 
-  loginButton(event: any) {
-    console.log(event);
+  ngOnInit() {}
+  get emailTitle() {
+    return this.formGroup.controls['email'];
   }
+  async onSubmit(event: any) {
+    console.log(this.formGroup.value);
+    console.log(this.formGroup.valid);
+    console.log(this.formGroup);
+    console.log('HEY');
+    console.log(this.formGroup.controls.email.errors);
 
-  get errorControl() {
-    return this.formData.controls;
-  }
-
-  onSubmit(event: any) {
-    console.log(this.formData.value);
-    console.log(this.formData.valid);
+    console.log(this.formGroup.errors);
 
     this.isSubmited = true;
+  }
+
+  //   public controlMailExists(email: string): AsyncValidatorFn {
+  //    return  async (control: AbstractControl) => {
+  //     const formGroup = control as FormGroup;
+  //     const emailControl = formGroup.get('email')?.value;
+  // return this.firebaseDataService.getUserByEmail(emailControl).pipe(
+  //   map((data) => {
+  //     return (data.length > 0 ? { emailExists:true }: null );
+  //   })
+  // )
+  //   }}
+
+  public fuckingQuery(email: string) {
+    return new Observable((observer) => {
+      this.firebaseDataService.getUserByEmail(email).subscribe((data) => {
+        if (data.length > 0) {
+          observer.next({
+            emailExists: true,
+          });
+        } else {
+          observer.next(null);
+        }
+      });
+    });
   }
 }

@@ -131,4 +131,10 @@ export class FirebaseDataService {
     const comentarioCollectionData = collectionData(queryComentario, { idField: 'id' }) as Observable<Livro[]>;
     return comentarioCollectionData;
   }
+
+  getUserByEmail(email: string): Observable<Utilizador[]> {
+    const queryUser = query(this.utilizadorCollectionRef, where('email', '==', email));
+    const userCollectionData = collectionData(queryUser, { idField: 'id' }) as Observable<Utilizador[]>;
+    return userCollectionData;
+  }
 }

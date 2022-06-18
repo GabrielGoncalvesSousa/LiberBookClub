@@ -15,45 +15,44 @@
     </div>
   </div>
 
-  <form [formGroup]="formData" (ngSubmit)="onSubmit($event)">
-    <ion-item>
-      <ion-label>E-Mail</ion-label>
-      <ion-input formControlName="email"></ion-input>
-    </ion-item>
-
-    <span
-      slot="error"
-      *ngIf="errorControl.email.errors?.required && isSubmited"
-    >
-      Your E-Mail is invalid!
-    </span>
-
-    <div class="email-login">
-      <p>Or login with email</p>
-      <div class="formfield">
-        <input type="text" name="email" id="email" formControlName="email" />
-        <label for="email" placeholder="Email">Email</label>
-        <span
-          class="error ion-padding"
-          *ngIf="isSubmited && errorControl.email.errors?.required"
-          >Email is required.</span
-        >
-      </div>
-      <div class="formfield">
+  <form [formGroup]="formGroup" (ngSubmit)="onSubmit($event)">
+    <div class="email-input" appearance="fill">
+      <mat-form-field class="ion-padding">
+        <mat-label>Enter your email</mat-label>
         <input
-          type="password"
-          name="password"
-          id="password"
-          formControlName="password"
+          class="fds"
+          matInput
+          placeholder="pat@example.com"
+          formControlName="email"
+          required
         />
-        <label for="password" placeholder="Password">Password</label>
-        <span
-          class="error ion-padding"
-          *ngIf="isSubmited && errorControl.password.errors?.required"
+        <mat-error *ngIf="formGroup.controls.email.invalid">
+          <div *ngIf="formGroup.controls.email.errors?.['required']">
+            Email is required.
+          </div>
+          <div *ngIf="formGroup.controls.email.errors?.['email']">
+            Invalid Email.
+          </div>
+          <div *ngIf="formGroup.controls.email.errors?.emailExists">
+            Email exists
+          </div>
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="ion-padding">
+        <mat-label>Enter your password</mat-label>
+        <input
+          class="fds"
+          matInput
+          placeholder="pat@example.com"
+          formControlName="password"
+          required
+        />
+        <mat-error *ngIf="formGroup.controls.password.errors?.['required']">
+          >Password is required</mat-error
         >
-          Password is required.
-        </span>
-      </div>
+      </mat-form-field>
+
       <div class="other-links">
         <div class="remember-me">
           <ion-checkbox formControlName="rememberMe"></ion-checkbox>
@@ -61,10 +60,11 @@
         </div>
         <p class="forgot">Forgot password?</p>
       </div>
-    </div>
-    <div class="login-button">
-      <ion-button class="login" type="submit">Login</ion-button>
-      <p>Don't have an account? <span routerLink="/signup">Signup</span></p>
+
+      <div class="login-button">
+        <ion-button class="login" type="submit">Login</ion-button>
+        <p>Don't have an account? <span routerLink="/signup">Signup</span></p>
+      </div>
     </div>
   </form>
 </ion-content>
