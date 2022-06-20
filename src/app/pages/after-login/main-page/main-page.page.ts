@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { FirebaseDataService } from 'src/app/api/services/firebase-data.service';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.page.html',
@@ -31,8 +32,7 @@ export class MainPagePage implements OnInit, AfterViewInit {
 
   logout() {
     console.log(`ded`);
-
-    this.FirebaseDataService.logout().subscribe(() => {
+    this.FirebaseDataService.logout().pipe(take(1)).subscribe(() => {
       this.router.navigate([
         '/login',
       ]);
