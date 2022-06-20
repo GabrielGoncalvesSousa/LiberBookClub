@@ -1,9 +1,12 @@
 <ion-header>
   <!-- Toolbar parte cima-->
   <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button></ion-back-button>
+    <ion-buttons slot="primary" (click)="logout()">
+      <ion-button
+        ><ion-icon size="large" name="log-out-outline"></ion-icon
+      ></ion-button>
     </ion-buttons>
+
     <ion-title>Home</ion-title>
   </ion-toolbar>
   <app-top-nav-bar

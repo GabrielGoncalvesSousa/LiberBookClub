@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { FirebaseDataService } from 'src/app/api/services/firebase-data.service';
 import { controlMailExistsWhenSigningUp } from '../login/email-validator';
+import { HotToastService } from '@ngneat/hot-toast';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
@@ -18,7 +20,12 @@ export class SignupPage implements OnInit {
   public password: string;
   public doesMailExist: boolean = true;
 
-  constructor(public formBuilder: FormBuilder, public firebaseDataService: FirebaseDataService) {
+  constructor(
+    public formBuilder: FormBuilder,
+    public firebaseDataService: FirebaseDataService,
+    private toast: HotToastService,
+    private router: Router
+  ) {
     this.formGroup = new FormGroup({
       email: new FormControl(
         '',
@@ -55,6 +62,22 @@ export class SignupPage implements OnInit {
 
     if (this.formGroup.valid) {
       console.log('valid');
+      const { email, password } = this.formGroup.value;
+      this.firebaseDataService.registerUser(email, password),
+        this.firebaseDataService
+          .register(email, password)
+          .pipe(
+            this.toast.observe({
+              success: 'User created successfully',
+              loading: 'Creating user...',
+              error: ({ message }) => `Error: ${message}`,
+            })
+          )
+          .subscribe(() => {
+            this.router.navigate([
+              '/main-page',
+            ]);
+          });
     }
   }
 }

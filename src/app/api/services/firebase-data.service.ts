@@ -1,23 +1,33 @@
 import { Injectable } from '@angular/core';
-import { collection, collectionData, docData, Firestore } from '@angular/fire/firestore';
+import { collection, collectionData, docData, Firestore, setDoc } from '@angular/fire/firestore';
 import { doc, getDocs, query, where } from '@firebase/firestore';
-import { Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { Genero } from '../models/genero.model';
 import { Livro } from '../models/livro.model';
 import { Utilizador } from '../models/utilizador.model';
 import { Utilizador_livro } from '../models/utilizador_livro.model';
+import {
+  Auth,
+  authState,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signOut,
+} from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirebaseDataService {
-  constructor(private firestore: Firestore) {}
+  constructor(private firestore: Firestore, public fireBaseAuth: Auth) {}
   //Referias as collections do firebase
+  public isLoggeinOn = false;
   public livroCollectionRef = collection(this.firestore, 'livro');
   public generoCollectionRef = collection(this.firestore, 'genero');
   public utilizadorCollectionRef = collection(this.firestore, 'utilizador');
   public utilizador_livroCollectionRef = collection(this.firestore, 'utilizador_livro');
   public comentarioCollectionRef = collection(this.firestore, 'comentario');
+
+  currentUser$ = authState(this.fireBaseAuth);
 
   public data = this.getData();
 
@@ -72,6 +82,12 @@ export class FirebaseDataService {
     return data;
   }
 
+  registerUser(email: string, password: string) {
+    setDoc(doc(this.utilizadorCollectionRef), {
+      email: email,
+      password: password,
+    });
+  }
   getLivroByName(name: string): Observable<Livro[]> {
     const queryLivro = query(this.livroCollectionRef, where('nome', '>=', name), where('nome', '<=', name + '\uf8ff'));
     const livroCollectionData = collectionData(queryLivro, { idField: 'id' }) as Observable<Livro[]>;
@@ -136,5 +152,17 @@ export class FirebaseDataService {
     const queryUser = query(this.utilizadorCollectionRef, where('email', '==', email));
     const userCollectionData = collectionData(queryUser, { idField: 'id' });
     return userCollectionData;
+  }
+
+  signin(email: string, password: string) {
+    return from(signInWithEmailAndPassword(this.fireBaseAuth, email, password));
+  }
+
+  register(email: string, password: string) {
+    return from(createUserWithEmailAndPassword(this.fireBaseAuth, email, password));
+  }
+
+  logout() {
+    return from(signOut(this.fireBaseAuth));
   }
 }

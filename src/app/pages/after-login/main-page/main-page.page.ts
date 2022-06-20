@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import { FirebaseDataService } from 'src/app/api/services/firebase-data.service';
-
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.page.html',
@@ -13,7 +13,7 @@ export class MainPagePage implements OnInit, AfterViewInit {
 
   public isSearchBarActiveMainPage: boolean;
 
-  constructor(private FirebaseDataService: FirebaseDataService) {
+  constructor(private FirebaseDataService: FirebaseDataService, private router: Router) {
     this.isSearchBarActiveMainPage = false;
   }
 
@@ -27,5 +27,15 @@ export class MainPagePage implements OnInit, AfterViewInit {
     event !== ''
       ? ((this.isSearchBarActiveMainPage = true), (this.OUTPUT_searchBarUserInput_MainPage = event))
       : (this.isSearchBarActiveMainPage = false);
+  }
+
+  logout() {
+    console.log(`ded`);
+
+    this.FirebaseDataService.logout().subscribe(() => {
+      this.router.navigate([
+        '/login',
+      ]);
+    });
   }
 }

@@ -10,19 +10,23 @@ import { MainPagePage } from './main-page.page';
 import { FooterNavBarComponent } from 'src/app/components/footer-nav-bar/footer-nav-bar.component';
 import { TopNavBarComponent } from 'src/app/components/top-nav-bar/top-nav-bar.component';
 import { ResultsSearchBarComponent } from 'src/app/components/results-search-bar/results-search-bar.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
-    imports: [
-        CommonModule,
-        FormsModule,
-        IonicModule,
-        MainPagePageRoutingModule,
-    ],
-    declarations: [
-        MainPagePage,
-        FooterNavBarComponent,
-        TopNavBarComponent,
-        ResultsSearchBarComponent,
-    ]
+  imports: [
+    MatIconModule,
+    MatMenuModule,
+    CommonModule,
+    FormsModule,
+    IonicModule,
+    MainPagePageRoutingModule,
+  ],
+  declarations: [
+    MainPagePage,
+    FooterNavBarComponent,
+    TopNavBarComponent,
+    ResultsSearchBarComponent,
+  ],
 })
 export class MainPagePageModule {}

@@ -1,3 +1,4 @@
+import { HotToastModule } from '@ngneat/hot-toast';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
@@ -47,7 +48,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     }),
     HttpClientModule,
     provideFirebaseApp(() => initializeApp(environment.firebase)),
-    // provideAuth(() => getAuth()),
+    provideAuth(() => getAuth()),
     provideFirestore(() => getFirestore()),
     provideStorage(() => getStorage()),
     BrowserAnimationsModule,
