@@ -13,13 +13,13 @@ import { Utilizador_livro } from '../models/utilizador_livro.model';
 export class FirebaseDataService {
   constructor(private firestore: Firestore) {}
   //Referias as collections do firebase
-  private livroCollectionRef = collection(this.firestore, 'livro');
-  private generoCollectionRef = collection(this.firestore, 'genero');
-  private utilizadorCollectionRef = collection(this.firestore, 'utilizador');
-  private utilizador_livroCollectionRef = collection(this.firestore, 'utilizador_livro');
-  private comentarioCollectionRef = collection(this.firestore, 'comentario');
+  public livroCollectionRef = collection(this.firestore, 'livro');
+  public generoCollectionRef = collection(this.firestore, 'genero');
+  public utilizadorCollectionRef = collection(this.firestore, 'utilizador');
+  public utilizador_livroCollectionRef = collection(this.firestore, 'utilizador_livro');
+  public comentarioCollectionRef = collection(this.firestore, 'comentario');
 
-  private data = this.getData();
+  public data = this.getData();
 
   getUtilizadores(): Observable<Utilizador[]> {
     return collectionData(this.utilizadorCollectionRef, { idField: 'id' }) as Observable<Utilizador[]>;
@@ -132,9 +132,9 @@ export class FirebaseDataService {
     return comentarioCollectionData;
   }
 
-  getUserByEmail(email: string): Observable<Utilizador[]> {
+  getUserByEmail(email: string) {
     const queryUser = query(this.utilizadorCollectionRef, where('email', '==', email));
-    const userCollectionData = collectionData(queryUser, { idField: 'id' }) as Observable<Utilizador[]>;
+    const userCollectionData = collectionData(queryUser, { idField: 'id' });
     return userCollectionData;
   }
 }

@@ -1,19 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  Validators,
-  FormControl,
-  FormBuilder,
-  FormGroup,
-  ValidatorFn,
-  ValidationErrors,
-  AbstractControl,
-  AsyncValidator,
-  AsyncValidatorFn,
-} from '@angular/forms';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Validators, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { FirebaseDataService } from 'src/app/api/services/firebase-data.service';
-import { controlMailExists } from './email-validator';
+import { controlMailExistsWhenLoggingIn } from './email-validator';
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
@@ -37,7 +25,7 @@ export class LoginPage implements OnInit {
           Validators.email,
           Validators.required,
         ],
-        controlMailExists(firebaseDataService)
+        controlMailExistsWhenLoggingIn(firebaseDataService)
       ),
 
       password: new FormControl('', [
@@ -65,30 +53,6 @@ export class LoginPage implements OnInit {
     console.log(this.formGroup.errors);
 
     this.isSubmited = true;
-  }
-
-  //   public controlMailExists(email: string): AsyncValidatorFn {
-  //    return  async (control: AbstractControl) => {
-  //     const formGroup = control as FormGroup;
-  //     const emailControl = formGroup.get('email')?.value;
-  // return this.firebaseDataService.getUserByEmail(emailControl).pipe(
-  //   map((data) => {
-  //     return (data.length > 0 ? { emailExists:true }: null );
-  //   })
-  // )
-  //   }}
-
-  public fuckingQuery(email: string) {
-    return new Observable((observer) => {
-      this.firebaseDataService.getUserByEmail(email).subscribe((data) => {
-        if (data.length > 0) {
-          observer.next({
-            emailExists: true,
-          });
-        } else {
-          observer.next(null);
-        }
-      });
-    });
+    console.log(this.formGroup.controls.email.errors == null);
   }
 }

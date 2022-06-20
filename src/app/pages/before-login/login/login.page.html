@@ -20,37 +20,36 @@
       <mat-form-field class="ion-padding">
         <mat-label>Enter your email</mat-label>
         <input
-          class="fds"
+          type="email"
           matInput
           placeholder="pat@example.com"
           formControlName="email"
           required
         />
         <mat-error *ngIf="formGroup.controls.email.invalid">
-          <div *ngIf="formGroup.controls.email.errors?.['required']">
+          <div *ngIf="formGroup.controls.email.errors?.required">
             Email is required.
           </div>
-          <div *ngIf="formGroup.controls.email.errors?.['email']">
+          <div *ngIf="formGroup.controls.email.errors?.email">
             Invalid Email.
           </div>
           <div *ngIf="formGroup.controls.email.errors?.emailExists">
-            Email exists
+            Email doesn't exist.
           </div>
         </mat-error>
       </mat-form-field>
 
       <mat-form-field class="ion-padding">
         <mat-label>Enter your password</mat-label>
-        <input
-          class="fds"
-          matInput
-          placeholder="pat@example.com"
-          formControlName="password"
-          required
-        />
-        <mat-error *ngIf="formGroup.controls.password.errors?.['required']">
-          >Password is required</mat-error
-        >
+        <input type="password" matInput formControlName="password" required />
+        <mat-error *ngIf="formGroup.controls.password.invalid">
+          <div *ngIf="formGroup.controls.password.errors?.required">
+            Password is required
+          </div>
+          <div *ngIf="formGroup.controls.password.errors?.minlength">
+            Password has to be 6 digits minimum
+          </div>
+        </mat-error>
       </mat-form-field>
 
       <div class="other-links">

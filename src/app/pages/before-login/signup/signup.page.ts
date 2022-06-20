@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FirebaseDataService } from 'src/app/api/services/firebase-data.service';
+import { controlMailExistsWhenSigningUp } from '../login/email-validator';
 
 @Component({
   selector: 'app-signup',
@@ -8,7 +11,50 @@ import { Component, OnInit } from '@angular/core';
   ],
 })
 export class SignupPage implements OnInit {
-  constructor() {}
+  public data: any;
+  public isSubmited: boolean = false;
+  public formGroup: FormGroup;
+
+  public password: string;
+  public doesMailExist: boolean = true;
+
+  constructor(public formBuilder: FormBuilder, public firebaseDataService: FirebaseDataService) {
+    this.formGroup = new FormGroup({
+      email: new FormControl(
+        '',
+        [
+          Validators.email,
+          Validators.required,
+        ],
+        controlMailExistsWhenSigningUp(firebaseDataService)
+      ),
+
+      password: new FormControl('', [
+        Validators.required,
+        Validators.minLength(6),
+      ]),
+
+      agreePolicy: new FormControl(false, Validators.requiredTrue),
+    });
+  }
 
   ngOnInit() {}
+  get emailTitle() {
+    return this.formGroup.controls['email'];
+  }
+  async onSubmit(event: any) {
+    this.formGroup.markAllAsTouched();
+    console.log(this.formGroup.value);
+    console.log(this.formGroup.valid);
+    console.log(this.formGroup);
+    console.log('HEY');
+    console.log(this.formGroup.controls.email.errors);
+
+    console.log(this.formGroup.controls.agreePolicy.errors);
+    console.log(this.formGroup.controls.agreePolicy.value);
+
+    if (this.formGroup.valid) {
+      console.log('valid');
+    }
+  }
 }
