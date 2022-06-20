@@ -1,4 +1,5 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { FirebaseDataService } from '../../api/services/firebase-data.service';
 
@@ -15,7 +16,7 @@ export class ResultsSearchBarComponent implements OnInit, OnChanges {
   public resultadoQuery: any;
   public didUserClickOnBook: boolean;
 
-  constructor(private firebaseDataService: FirebaseDataService) {
+  constructor(private firebaseDataService: FirebaseDataService, public router: Router) {
     this.resultadoQuery = [];
     this.firstLoad();
     console.log(this.resultadoQuery);
@@ -61,5 +62,8 @@ export class ResultsSearchBarComponent implements OnInit, OnChanges {
     });
 
     this.resultadoQuery = book;
+    // this.router.navigate([
+    //   '/main-menu',
+    // ]);
   }
 }

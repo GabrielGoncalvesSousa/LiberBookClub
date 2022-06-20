@@ -35,6 +35,10 @@ const routes: Routes = [
     path: 'welcome',
     loadChildren: () => import('./pages/before-login/welcome/welcome.module').then((m) => m.WelcomePageModule),
   },
+  {
+    path: 'book-info',
+    loadChildren: () => import('./pages/after-login/book-info/book-info.module').then((m) => m.BookInfoPageModule),
+  },
 ];
 
 @NgModule({

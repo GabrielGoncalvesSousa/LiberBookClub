@@ -4,6 +4,7 @@ import { FirebaseDataService } from 'src/app/api/services/firebase-data.service'
 import { controlMailExistsWhenLoggingIn } from './email-validator';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Router } from '@angular/router';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -82,7 +83,8 @@ export class LoginPage implements OnInit {
             success: 'Successfully loggen in',
             loading: 'Logging in...',
             error: 'Error Logging in',
-          })
+          }),
+          take(1)
         )
         .subscribe((res) => {
           this.router.navigate([

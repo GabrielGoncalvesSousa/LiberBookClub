@@ -32,7 +32,9 @@ export class MainPagePage implements OnInit, AfterViewInit {
 
   logout() {
     console.log(`ded`);
-    this.FirebaseDataService.logout().pipe(take(1)).subscribe(() => {
+    this.FirebaseDataService.logout().pipe().subscribe(() => {
+      console.log('SAI CARALHGO');
+
       this.router.navigate([
         '/login',
       ]);
