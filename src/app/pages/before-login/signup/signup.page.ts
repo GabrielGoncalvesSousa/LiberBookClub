@@ -63,21 +63,23 @@ export class SignupPage implements OnInit {
     if (this.formGroup.valid) {
       console.log('valid');
       const { email, password } = this.formGroup.value;
-      this.firebaseDataService.registerUser(email, password),
-        this.firebaseDataService
-          .register(email, password)
-          .pipe(
-            this.toast.observe({
-              success: 'User created successfully',
-              loading: 'Creating user...',
-              error: ({ message }) => `Error: ${message}`,
-            })
-          )
-          .subscribe(() => {
-            this.router.navigate([
-              '/main-page',
-            ]);
-          });
+
+      this.firebaseDataService
+        .register(email, password)
+        .pipe(
+          this.toast.observe({
+            success: 'User created successfully',
+            loading: 'Creating user...',
+            error: ({ message }) => `Error: ${message}`,
+          })
+        )
+        .subscribe((res) => {
+          console.log(res);
+          this.firebaseDataService.registerUser(email, password, res.user.uid);
+          this.router.navigate([
+            '/main-page',
+          ]);
+        });
     }
   }
 }

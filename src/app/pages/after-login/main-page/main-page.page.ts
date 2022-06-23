@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Output, EventEmitter, OnDestroy } from '@angular/core';
 import { FirebaseDataService } from 'src/app/api/services/firebase-data.service';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
@@ -9,7 +9,7 @@ import { take } from 'rxjs/operators';
     './main-page.page.scss',
   ],
 })
-export class MainPagePage implements OnInit, AfterViewInit {
+export class MainPagePage implements OnInit, AfterViewInit, OnDestroy {
   @Output() OUTPUT_searchBarUserInput_MainPage: any;
 
   public isSearchBarActiveMainPage: boolean;
@@ -17,12 +17,11 @@ export class MainPagePage implements OnInit, AfterViewInit {
   constructor(private FirebaseDataService: FirebaseDataService, private router: Router) {
     this.isSearchBarActiveMainPage = false;
   }
+  ngOnDestroy(): void {}
 
   ngOnInit() {}
 
-  ngAfterViewInit() {
-    console.log(this.isSearchBarActiveMainPage);
-  }
+  ngAfterViewInit() {}
 
   functionSearchBarUpdate_MainPage(event: any) {
     event !== ''
@@ -31,10 +30,7 @@ export class MainPagePage implements OnInit, AfterViewInit {
   }
 
   logout() {
-    console.log(`ded`);
-    this.FirebaseDataService.logout().pipe().subscribe(() => {
-      console.log('SAI CARALHGO');
-
+    this.FirebaseDataService.logout().pipe(take(1)).subscribe((res) => {
       this.router.navigate([
         '/login',
       ]);

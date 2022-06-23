@@ -1,6 +1,8 @@
 import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
 import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
+import { HotToastService } from '@ngneat/hot-toast';
+import { take } from 'rxjs/operators';
+
 import { FirebaseDataService } from '../../api/services/firebase-data.service';
 
 @Component({
@@ -16,40 +18,38 @@ export class ResultsSearchBarComponent implements OnInit, OnChanges {
   public resultadoQuery: any;
   public didUserClickOnBook: boolean;
 
-  constructor(private firebaseDataService: FirebaseDataService, public router: Router) {
+  constructor(private toast: HotToastService, private firebaseDataService: FirebaseDataService, public router: Router) {
     this.resultadoQuery = [];
     this.firstLoad();
-    console.log(this.resultadoQuery);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(this.INPUT_searchBarUserInput_ResultsSearchBar);
     this.refreshContent();
   }
 
-  async ngOnInit() {
-    console.log('wtf');
-  }
+  ngOnInit() {}
 
-  async refreshContent() {
+  refreshContent() {
+    console.log('refreshing');
+
     if (this.INPUT_searchBarUserInput_ResultsSearchBar) {
       if (this.INPUT_searchBarUserInput_ResultsSearchBar[1] !== false) {
         this.firebaseDataService.getLivroByName(this.INPUT_searchBarUserInput_ResultsSearchBar[0]).subscribe((data) => {
           this.resultadoQuery = data;
           console.log(this.resultadoQuery);
-        });
+        }).unsubscribe;
       } else {
         this.firstLoad();
       }
     }
   }
 
-  async firstLoad() {
+  firstLoad() {
     this.firebaseDataService.getLivros().subscribe((data) => {
       this.resultadoQuery = data;
 
       console.log(this.resultadoQuery);
-    });
+    }).unsubscribe;
     this.didUserClickOnBook = false;
   }
 
@@ -57,13 +57,28 @@ export class ResultsSearchBarComponent implements OnInit, OnChanges {
     this.didUserClickOnBook = true;
     let utilizador_livro;
     let comentarios;
-    this.firebaseDataService.getUtilizadores_livroByIdLivro(book.id).subscribe((data) => {
+    this.firebaseDataService.getUtilizadores_livroByIdLivro(book.id).pipe(take(1)).subscribe((data) => {
       utilizador_livro = data;
-    });
+    }).unsubscribe;
 
     this.resultadoQuery = book;
     // this.router.navigate([
     //   '/main-menu',
     // ]);
+  }
+
+  addToList(book: any) {
+    this.firebaseDataService
+      .addBookToList(book.id)
+      .pipe(
+        this.toast.observe({
+          success: 'Added to list',
+          loading: 'Adding to list',
+          error: 'Book already in list',
+        })
+      )
+      .subscribe((res) => {
+        console.log(res);
+      });
   }
 }

@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Validators, FormControl, FormBuilder, FormGroup } from '@angular/forms';
 import { FirebaseDataService } from 'src/app/api/services/firebase-data.service';
 import { controlMailExistsWhenLoggingIn } from './email-validator';
 import { HotToastService } from '@ngneat/hot-toast';
 import { Router } from '@angular/router';
 import { take } from 'rxjs/operators';
+import { HostListener } from '@angular/core';
 
 @Component({
   selector: 'app-login',
@@ -13,7 +14,7 @@ import { take } from 'rxjs/operators';
     './login.page.scss',
   ],
 })
-export class LoginPage implements OnInit {
+export class LoginPage implements OnInit, OnDestroy {
   public data: any;
   public isSubmited: boolean = false;
   public formGroup: FormGroup;
@@ -48,13 +49,20 @@ export class LoginPage implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  @HostListener('unloaded ')
+  ngOnDestroy(): void {
+    console.log('LOGIN PAGE DESTRUIDOa');
+  }
+
+  ngOnInit() {
+    console.log(this.router);
+  }
 
   get emailTitle() {
     return this.formGroup.controls['email'];
   }
 
-  async onSubmit(event: any) {
+  onSubmit(event: any) {
     console.log(this.formGroup.value);
     console.log(this.formGroup.valid);
     console.log(this.formGroup);
@@ -87,9 +95,15 @@ export class LoginPage implements OnInit {
           take(1)
         )
         .subscribe((res) => {
-          this.router.navigate([
-            '/main-page',
-          ]);
+          console.log('LOGIN PAGE BEFORE LOGGING OUT');
+
+          this.router
+            .navigate([
+              '/main-page',
+            ])
+            .then(() => {
+              this.ngOnDestroy();
+            });
         });
     }
   }

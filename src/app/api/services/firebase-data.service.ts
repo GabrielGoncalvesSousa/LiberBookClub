@@ -1,11 +1,21 @@
 import { Injectable } from '@angular/core';
-import { collection, collectionData, docData, Firestore, setDoc } from '@angular/fire/firestore';
+import {
+  collection,
+  collectionData,
+  docData,
+  DocumentReference,
+  Firestore,
+  getDoc,
+  setDoc,
+  updateDoc,
+} from '@angular/fire/firestore';
 import { doc, getDocs, query, where } from '@firebase/firestore';
-import { from, Observable } from 'rxjs';
+import { BehaviorSubject, from, Observable } from 'rxjs';
 import { Genero } from '../models/genero.model';
 import { Livro } from '../models/livro.model';
 import { Utilizador } from '../models/utilizador.model';
 import { Utilizador_livro } from '../models/utilizador_livro.model';
+
 import {
   Auth,
   authState,
@@ -13,11 +23,14 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from '@angular/fire/auth';
+import { map, take } from 'rxjs/operators';
+import { HotToastService } from '@ngneat/hot-toast';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FirebaseDataService {
+  toast: HotToastService;
   constructor(private firestore: Firestore, public fireBaseAuth: Auth) {}
   //Referias as collections do firebase
   public isLoggeinOn = false;
@@ -82,8 +95,8 @@ export class FirebaseDataService {
     return data;
   }
 
-  registerUser(email: string, password: string) {
-    setDoc(doc(this.utilizadorCollectionRef), {
+  registerUser(email: string, password: string, userId) {
+    setDoc(doc(this.utilizadorCollectionRef, userId), {
       email: email,
       password: password,
     });
@@ -133,6 +146,76 @@ export class FirebaseDataService {
     return observable;
   }
 
+  addBookToList(bookId: number) {
+    return new Observable((subscriber) => {
+      this.currentUser$.pipe(take(1), map((value) => value.uid)).subscribe((val) =>
+        this.getUtilizadorLivroByIdLivroAndIdUtilizador(bookId, val).pipe(take(1)).subscribe((res) => {
+          console.log('EROPIFJ');
+
+          console.log(res);
+          subscriber.next(res);
+          if (res[0].isList == true) {
+            subscriber.error();
+          }
+        })
+      );
+    });
+  }
+
+  getUtilizadorLivroByIdLivroAndIdUtilizador(id_livro: number, id_utilizador: any) {
+    const queryUtilizadorLivro = query(
+      this.utilizador_livroCollectionRef,
+      where('id_livro', '==', id_livro),
+      where('id_utilizador', '==', id_utilizador)
+    );
+    const utilizadorLivroCollectionData = collectionData(queryUtilizadorLivro, { idField: 'id' });
+    utilizadorLivroCollectionData.pipe(take(1)).subscribe((res) => {
+      console.log(res);
+
+      if (res.length > 0) {
+        setDoc(doc(this.utilizador_livroCollectionRef, res[0].id), {
+          id_livro: id_livro,
+          id_utilizador: id_utilizador,
+          isList: true,
+          isRead: false,
+        });
+      } else {
+        setDoc(doc(this.utilizador_livroCollectionRef), {
+          id_livro: id_livro,
+          id_utilizador: id_utilizador,
+          isList: true,
+          isRead: false,
+        });
+      }
+    }).unsubscribe;
+    return utilizadorLivroCollectionData;
+  }
+
+  removeFromList(id_livro, id_utilizador) {
+    let observer = new Observable((obs) => {
+      const queryUtilizadorLivro = query(
+        this.utilizador_livroCollectionRef,
+        where('id_livro', '==', id_livro),
+        where('id_utilizador', '==', id_utilizador)
+      );
+      const utilizadorLivroCollectionData = collectionData(queryUtilizadorLivro, { idField: 'id' });
+
+      utilizadorLivroCollectionData.pipe(take(1)).subscribe((res) => {
+        let livroRef = doc(this.firestore, 'utilizador_livro', `${res[0].id}`);
+        obs.next(livroRef);
+      });
+    });
+
+    observer.subscribe(async (res: DocumentReference) => {
+      const docSnap = await updateDoc(res, {
+        id_livro: id_livro,
+        id_utilizador: id_utilizador,
+        isList: false,
+        isRead: false,
+      });
+    });
+  }
+
   getUtilizadores_livroByIdLivro(idLivro: any) {
     const queryUtilizadorLivro = query(this.utilizador_livroCollectionRef, where('id_livro', '==', idLivro));
 
@@ -152,6 +235,32 @@ export class FirebaseDataService {
     const queryUser = query(this.utilizadorCollectionRef, where('email', '==', email));
     const userCollectionData = collectionData(queryUser, { idField: 'id' });
     return userCollectionData;
+  }
+
+  getUserList() {
+    return new Observable((subs) => {
+      this.currentUser$.subscribe((userInfo) => {
+        collectionData(query(this.utilizador_livroCollectionRef, where('id_utilizador', '==', userInfo.uid)))
+          .pipe()
+          .subscribe((qr) => {
+            subs.next(qr);
+          });
+      });
+    });
+  }
+
+  getLivroById(livroId) {
+    console.log(livroId);
+
+    return new Observable((subs) => {
+      this.getLivros().subscribe((livros) => {
+        livros.forEach((livro) => {
+          if (livro.id == livroId) {
+            subs.next(livro);
+          }
+        });
+      });
+    });
   }
 
   signin(email: string, password: string) {
