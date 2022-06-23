@@ -30,8 +30,7 @@ import { HotToastService } from '@ngneat/hot-toast';
   providedIn: 'root',
 })
 export class FirebaseDataService {
-  toast: HotToastService;
-  constructor(private firestore: Firestore, public fireBaseAuth: Auth) {}
+  constructor(private firestore: Firestore, public fireBaseAuth: Auth, public toast: HotToastService) {}
   //Referias as collections do firebase
   public isLoggeinOn = false;
   public livroCollectionRef = collection(this.firestore, 'livro');
@@ -203,17 +202,30 @@ export class FirebaseDataService {
       utilizadorLivroCollectionData.pipe(take(1)).subscribe((res) => {
         let livroRef = doc(this.firestore, 'utilizador_livro', `${res[0].id}`);
         obs.next(livroRef);
+        obs.complete();
       });
     });
 
-    observer.subscribe(async (res: DocumentReference) => {
-      const docSnap = await updateDoc(res, {
-        id_livro: id_livro,
-        id_utilizador: id_utilizador,
-        isList: false,
-        isRead: false,
+    console.log(observer);
+
+    observer
+      .pipe(
+        this.toast.observe({
+          success: 'Removed from list',
+          loading: 'Removing from list',
+          error: 'Something went wrong',
+        })
+      )
+      .subscribe(async (res: DocumentReference) => {
+        const docSnap = await updateDoc(res, {
+          id_livro: id_livro,
+          id_utilizador: id_utilizador,
+          isList: false,
+          isRead: false,
+        });
       });
-    });
+
+    // return utilizadorLivroCollectionData;
   }
 
   getUtilizadores_livroByIdLivro(idLivro: any) {

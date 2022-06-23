@@ -24,24 +24,25 @@ export class MyListPage implements OnInit {
     this.firebase.currentUser$.pipe(take(1)).subscribe((user) => {
       for (let i = 0; i < this.userBookList.length; i++) {
         if (this.userBookList[i].id == livro.id && i > 0) {
+          console.log(i);
+
           this.userBookList.splice(i, 1);
-        } else {
+        } else if (this.userBookList.length == 0) {
           this.userBookList = [];
         }
       }
 
       this.firebase.removeFromList(livro.id, user.uid);
     });
-    this.toast.show('Book removed from list');
   }
 
   updateContent() {
-    this.firebase.getUserList().subscribe((res: any[]) => {
+    this.firebase.getUserList().pipe(take(1)).subscribe((res: any[]) => {
       console.log(res);
       res.forEach((element) => {
         console.log(element);
 
-        this.firebase.getLivroById(element.id_livro).subscribe((livro: Livro) => {
+        this.firebase.getLivroById(element.id_livro).pipe(take(1)).subscribe((livro: Livro) => {
           if (element.isList == true) {
             this.userBookList.push(livro);
             console.log(this.userBookList);
