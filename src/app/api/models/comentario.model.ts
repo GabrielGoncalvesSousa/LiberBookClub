@@ -1,5 +1,6 @@
 export interface Comentario {
-  id_comentario: number;
+  id: number;
+  avaliacao: number;
   id_utilizadorLivro: number;
   data: Date;
   comentario: string;

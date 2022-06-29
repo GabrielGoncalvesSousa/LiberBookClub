@@ -25,6 +25,7 @@ import {
 } from '@angular/fire/auth';
 import { map, take } from 'rxjs/operators';
 import { HotToastService } from '@ngneat/hot-toast';
+import { Comentario } from '../models/comentario.model';
 
 @Injectable({
   providedIn: 'root',
@@ -228,15 +229,6 @@ export class FirebaseDataService {
     // return utilizadorLivroCollectionData;
   }
 
-  getUtilizadores_livroByIdLivro(idLivro: any) {
-    const queryUtilizadorLivro = query(this.utilizador_livroCollectionRef, where('id_livro', '==', idLivro));
-
-    const utilizadorLivroCollectionData = collectionData(queryUtilizadorLivro, { idField: 'id' }) as Observable<
-      Utilizador_livro[]
-    >;
-    return utilizadorLivroCollectionData;
-  }
-
   getComentarioByBookId(id: any) {
     const queryComentario = query(this.comentarioCollectionRef, where('id', '==', id));
     const comentarioCollectionData = collectionData(queryComentario, { idField: 'id' }) as Observable<Livro[]>;
@@ -273,6 +265,22 @@ export class FirebaseDataService {
         });
       });
     });
+  }
+
+  //oh meu deus como e que vou fazer isto
+  getComentarioPorIdUtilizadorLivro(idUtilizadorLivro) {
+    const queryComentario = query(this.comentarioCollectionRef, where('id_utilizadorLivro', '==', idUtilizadorLivro));
+    const comentarioCollectionData = collectionData(queryComentario, { idField: 'id' }) as Observable<Comentario[]>;
+    return comentarioCollectionData;
+  }
+
+  getUtilizadores_livroByIdLivro(idLivro: any) {
+    const queryUtilizadorLivro = query(this.utilizador_livroCollectionRef, where('id_livro', '==', idLivro));
+    const utilizadorLivroCollectionData = collectionData(queryUtilizadorLivro, { idField: 'id' }) as Observable<
+      Utilizador_livro[]
+    >;
+
+    return utilizadorLivroCollectionData;
   }
 
   signin(email: string, password: string) {
