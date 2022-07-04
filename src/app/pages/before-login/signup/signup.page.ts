@@ -51,19 +51,19 @@ export class SignupPage implements OnInit {
   }
   async onSubmit(event: any) {
     this.formGroup.markAllAsTouched();
-    console.log(this.formGroup.value);
-    console.log(this.formGroup.valid);
-    console.log(this.formGroup);
-    console.log('HEY');
-    console.log(this.formGroup.controls.email.errors);
 
-    console.log(this.formGroup.controls.agreePolicy.errors);
-    console.log(this.formGroup.controls.agreePolicy.value);
-
+    //Se for valido, retiramos o email e a password , anexamos um hotToast e registamos de 2 formas diferentes,
+    //primeiro registamos dentro da colecao de users e depois registamos atraves da autenticacao auth.firebase 
+    //de forma ao utilizador poder entrar na aplicacao, registamos destas 2 formas porque, 1 guarda o user numa colecao
+    //de forma a obtermos todos os dados associados a ele, nome, email, etc e de forma a permitir criar ligacoes com o user,
+    // como os comentarios associados a ele, os livros que leu etc e registamos no auth.firebase porque o auth.firebase
+    //so permite registar a password e o identifier mas precisamos de registar la para podermos ter acesso as funcoes auth.
+    //assim primeiro registamos no auth, retiramos o userId criado automaticamente no auth e mandamos para a funcao de registo
+    // da colecao user e registar um documento com o mesmo id que  userId do auth, nada confuso
+    
     if (this.formGroup.valid) {
       console.log('valid');
       const { email, password } = this.formGroup.value;
-
       this.firebaseDataService
         .register(email, password)
         .pipe(

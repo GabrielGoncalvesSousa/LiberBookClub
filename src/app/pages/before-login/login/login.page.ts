@@ -18,26 +18,34 @@ export class LoginPage implements OnInit, OnDestroy {
   public data: any;
   public isSubmited: boolean = false;
   public formGroup: FormGroup;
-
   public password: string;
   public doesMailExist: boolean = true;
 
+  //Construtor com o hotToast (toast com animacoes e verificacao in real time da execucao de um observer consoante o estado do observer)
+  
   constructor(
     public formBuilder: FormBuilder,
     public firebaseDataService: FirebaseDataService,
     private toast: HotToastService,
     private router: Router
   ) {
+    //FormGroup com as constraints
     this.formGroup = new FormGroup({
       email: new FormControl(
         '',
         [
+          //Verificador se a string corresponde a um mail
           Validators.email,
+
+          //Verificador que obriga ao input do email
           Validators.required,
         ],
+
+        //Costum async validator que faz querie ao firebase , deu um trabalho isto
         controlMailExistsWhenLoggingIn(firebaseDataService)
       ),
 
+      
       password: new FormControl('', [
         Validators.required,
         Validators.minLength(6),
@@ -63,40 +71,22 @@ export class LoginPage implements OnInit, OnDestroy {
   }
 
   onSubmit(event: any) {
-    console.log(this.formGroup.value);
-    console.log(this.formGroup.valid);
-    console.log(this.formGroup);
-    console.log('HEY');
-    console.log(this.formGroup.controls.email.errors);
 
-    console.log(this.formGroup.errors);
-
-    this.isSubmited = true;
-
-    console.log(this.formGroup.controls.email.errors == null);
-    // this.formGroup.valid
-    //   ? () => {
-    //       let banana = this.firebaseDataService.signin(this.formGroup.value.email, this.formGroup.value.password);
-    //       console.log(banana);
-    //     }
-    //   : console.log('dd');
-
+    //Se o formGroup estiver valido ao clicar em login faz login
     if (this.formGroup.valid) {
       console.log(this.formGroup.value);
-
       this.firebaseDataService
         .signin(this.formGroup.value.email, this.formGroup.value.password)
         .pipe(
           this.toast.observe({
             success: 'Successfully loggen in',
             loading: 'Logging in...',
-            error: 'Error Logging in',
+            error: 'Invalid Password',
           }),
           take(1)
         )
         .subscribe((res) => {
           console.log('LOGIN PAGE BEFORE LOGGING OUT');
-
           this.router
             .navigate([
               '/main-page',

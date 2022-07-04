@@ -1,4 +1,5 @@
 <ion-content>
+  <!-- If user did not click on a book, loads books-->
   <div *ngIf="!didUserClickOnBook; else elseBlock">
     <div *ngFor="let livro of resultadoQuery">
       <ion-card class="ion-activated">
@@ -25,6 +26,8 @@
       </ion-card>
     </div>
   </div>
+
+  
   <ng-template #elseBlock>
     <ion-card class="ion-activated">
       <ion-button fill="clear" (click)="firstLoad()">
@@ -38,7 +41,6 @@
 
       <ion-card-header>
         <ion-card-title>{{ resultadoQuery.nome }}</ion-card-title>
-
         <ion-card-subtitle
           >{{ resultadoQuery.autor }} publicado em
           {{ resultadoQuery.dataPublicada.toDate() | date: "dd/MM/yyyy" }}

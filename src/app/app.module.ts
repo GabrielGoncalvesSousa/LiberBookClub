@@ -8,7 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 
 //Ionic storage
 import { IonicStorageModule } from '@ionic/storage-angular';
-
 import { HttpClientModule } from '@angular/common/http';
 
 //Sqlite drivers

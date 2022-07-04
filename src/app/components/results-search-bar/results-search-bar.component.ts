@@ -3,8 +3,6 @@ import { Router } from '@angular/router';
 import { HotToastService } from '@ngneat/hot-toast';
 import { mergeMap, take } from 'rxjs/operators';
 import { Comentario } from 'src/app/api/models/comentario.model';
-import { runInThisContext } from 'vm';
-
 import { FirebaseDataService } from '../../api/services/firebase-data.service';
 
 @Component({
@@ -40,32 +38,40 @@ export class ResultsSearchBarComponent implements OnInit, OnChanges, OnDestroy {
 
   ngOnInit() {}
 
+  //When the OnChanges lifecycle hook is called, it checks what the change was 
+  // on the INPUT variable that comes from the top-nav-bar component
   refreshContent() {
     console.log('refreshing');
-
     if (this.INPUT_searchBarUserInput_ResultsSearchBar) {
+
+      //To verify if theres content on the searchBar
       if (this.INPUT_searchBarUserInput_ResultsSearchBar[1] !== false) {
         this.firebaseDataService.getLivroByName(this.INPUT_searchBarUserInput_ResultsSearchBar[0]).subscribe((data) => {
           this.resultadoQuery = data;
           console.log(this.resultadoQuery);
         }).unsubscribe;
+
+        //Else it loads all the books again
       } else {
         this.firstLoad();
       }
     }
   }
 
+  //When the component is constructed, it loads all the books 
   firstLoad() {
     this.coments = [];
     this.book_user = [];
     this.firebaseDataService.getLivros().subscribe((data) => {
       this.resultadoQuery = data;
-
       console.log(this.resultadoQuery);
     }).unsubscribe;
     this.didUserClickOnBook = false;
   }
 
+  //When user clicks on a specific book, theres a bunch of observers here because i tried to manually do
+  // all the inner joins from firebase since its a no-sql database, but because everything is async it gets
+  //complicated and i can't make it load in the order i need
   public goToBook(book: any) {
     this.didUserClickOnBook = true;
     this.firebaseDataService
@@ -74,7 +80,6 @@ export class ResultsSearchBarComponent implements OnInit, OnChanges, OnDestroy {
       .subscribe((res_utilizadores_livro) => {
         res_utilizadores_livro.forEach((utili_livro) => {
           this.book_user.push(utili_livro);
-
           this.firebaseDataService
             .getUtilizadorById(utili_livro.id_utilizador)
             .pipe(take(1))
@@ -118,12 +123,6 @@ export class ResultsSearchBarComponent implements OnInit, OnChanges, OnDestroy {
                     this.book_user.forEach((bkuser) => {
                       this.coments.forEach((coment) => {
                         this.userInfo.forEach((userInfo) => {
-                          // console.log('bkuser');
-                          // console.log(bkuser);
-                          // console.log('coment');
-                          // console.log(coment);
-                          // console.log('userInfo');
-                          // console.log(userInfo);
                         });
                       });
                     });
@@ -148,6 +147,7 @@ export class ResultsSearchBarComponent implements OnInit, OnChanges, OnDestroy {
     console.log(this.infoEditada);
   }
 
+  //Ads a book to the users personal list
   addToList(book: any) {
     this.firebaseDataService
       .addBookToList(book.id)

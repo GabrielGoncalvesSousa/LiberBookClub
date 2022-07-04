@@ -1,3 +1,4 @@
+//Study service designed to explore how to implement sqlite
 import { Injectable } from '@angular/core';
 
 import { Platform } from '@ionic/angular';

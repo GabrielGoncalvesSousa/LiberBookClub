@@ -15,6 +15,7 @@
     </div>
   </div>
 
+  <!--Form group de registar com costum async email validator-->
   <form [formGroup]="formGroup" (ngSubmit)="onSubmit($event)">
     <div class="email-input" appearance="fill">
       <mat-form-field class="ion-padding">
@@ -52,18 +53,23 @@
         </mat-error>
       </mat-form-field>
 
+      <!-- mat-input nao é compativel com checkboxes, entao o work around disto para 
+        associar o a mensagem de erro do mat-error com o formControl da ionic checkbox foi
+        criar o mat-label e o ion-checkbox a seguir, associar o checkbox ao formControl,
+        de seguida colocar abaixo o mat-error e fazer os ifs com os controlers da checkbox
+        como isto tudo nao esta dentro de um mat-form-field temos que editar o estilo
+        do mat error de forma a manualmente colocar devidamente alinhado com a checkbox
+        de forma a simular tudo como se fosse um mat-form-field com um input tipo string
+        (os mat inputs so funcionam com strings), isto foi trabalho de 1 dia inteiro
+        !-->
       <mat-label class="ion-padding">I agree with privacy policy</mat-label>
       <ion-checkbox
         type="checkbox"
-        formControlName="agreePolicy"
-      ></ion-checkbox>
+        formControlName="agreePolicy"></ion-checkbox>
       <mat-error
         style="padding-left: 15px"
-        *ngIf="formGroup.controls.agreePolicy.errors?.required &&formGroup.controls.agreePolicy.touched"
-      >
-        You must agree to the privacy policy</mat-error
-      >
-
+        *ngIf="formGroup.controls.agreePolicy.errors?.required &&formGroup.controls.agreePolicy.touched">
+        You must agree to the privacy policy</mat-error>
       <div class="login-button">
         <ion-button class="login" type="submit">Login</ion-button>
         <p>Already have an account? <span routerLink="/login">Signup</span></p>
